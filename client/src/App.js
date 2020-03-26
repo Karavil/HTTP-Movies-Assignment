@@ -21,6 +21,18 @@ const App = () => {
       setSavedList([...savedList, movie]);
    };
 
+   const deleteMovie = id => {
+      axios
+         .delete("http://localhost:5000/api/movies/" + id)
+         .then(res => {
+            console.log(res);
+            setMovieList(movies =>
+               movies.filter(movie => movie.id !== parseInt(id))
+            );
+         })
+         .catch(err => console.log(err));
+   };
+
    const editMovie = (id, data) => {
       axios
          .put("http://localhost:5000/api/movies/" + id, data)
@@ -48,7 +60,7 @@ const App = () => {
          </Route>
 
          <Route path="/movies/:id">
-            <Movie addMovie={addMovie} />
+            <Movie addMovie={addMovie} deleteMovie={deleteMovie} />
          </Route>
          <Route path="/edit/:id">
             <EditMovie editMovie={editMovie} />

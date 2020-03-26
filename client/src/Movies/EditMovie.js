@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useRouteMatch } from "react-router-dom";
-import { useForm } from "react-hook-form";
 
-function EditMovie({ editMovie }) {
+import EditMovieForm from "./EditMovieForm";
+
+function EditMovie(props) {
    const [movie, setMovie] = useState(null);
    const match = useRouteMatch();
 
@@ -18,13 +19,11 @@ function EditMovie({ editMovie }) {
       fetchMovie(match.params.id);
    }, [match.params.id]);
 
-   const { title, director, metascore, stars } = movie;
-   const { register, handleSubmit, errors } = useForm({
-      defaultValues: { ...movie }
-   });
-   const onSubmit = data => console.log(data);
-
-   return movie ? <EditMovieForm movie={movie} /> : "Loading...";
+   return movie ? (
+      <EditMovieForm movie={movie} editMovie={props.editMovie} />
+   ) : (
+      "Loading..."
+   );
 }
 
 export default EditMovie;

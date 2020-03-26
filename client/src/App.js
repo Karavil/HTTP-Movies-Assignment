@@ -21,7 +21,19 @@ const App = () => {
       setSavedList([...savedList, movie]);
    };
 
-   const editMovie = (id, movieData) => {};
+   const editMovie = (id, data) => {
+      axios
+         .put("http://localhost:5000/api/movies/" + id, data)
+         .then(res =>
+            setMovieList(movies =>
+               movies.map(movie => {
+                  if (movie.id === res.data.id) return res.data;
+                  return movie;
+               })
+            )
+         )
+         .catch(err => console.log(err));
+   };
 
    useEffect(() => {
       getMovieList();

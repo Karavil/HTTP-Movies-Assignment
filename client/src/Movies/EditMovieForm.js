@@ -1,12 +1,17 @@
 import React from "react";
 import { useForm } from "react-hook-form";
+import { useHistory } from "react-router-dom";
 
 const EditMovieForm = ({ movie, editMovie }) => {
-   const { register, handleSubmit, errors } = useForm({
+   const history = useHistory();
+   const { register, handleSubmit } = useForm({
       defaultValues: { ...movie }
    });
 
-   const onSubmit = formData => editMovie(movie.id, { ...movie, ...formData });
+   const onSubmit = formData => {
+      editMovie(movie.id, { ...movie, ...formData });
+      history.goBack();
+   };
 
    return (
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -52,7 +57,7 @@ const EditMovieForm = ({ movie, editMovie }) => {
             </div>
 
             <button type="submit" className="save-button">
-               Save
+               Submit
             </button>
          </div>
       </form>

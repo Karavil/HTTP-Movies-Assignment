@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useRouteMatch } from "react-router-dom";
-import MovieCard from "./MovieCard";
+import { useForm } from "react-hook-form";
 
-function Movie({ addMovie }) {
+function EditMovie({ editMovie }) {
    const [movie, setMovie] = useState(null);
    const match = useRouteMatch();
 
@@ -14,27 +14,17 @@ function Movie({ addMovie }) {
          .catch(err => console.log(err.response));
    };
 
-   const saveMovie = () => {
-      addMovie(movie);
-   };
-
    useEffect(() => {
       fetchMovie(match.params.id);
    }, [match.params.id]);
 
-   if (!movie) {
-      return <div>Loading movie information...</div>;
-   }
+   const { title, director, metascore, stars } = movie;
+   const { register, handleSubmit, errors } = useForm({
+      defaultValues: { ...movie }
+   });
+   const onSubmit = data => console.log(data);
 
-   return (
-      <div className="save-wrapper">
-         <MovieCard movie={movie} />
-
-         <div className="save-button" onClick={saveMovie}>
-            Save
-         </div>
-      </div>
-   );
+   return movie ? <EditMovieForm movie={movie} /> : "Loading...";
 }
 
-export default Movie;
+export default EditMovie;
